@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Poängtavla</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            font-size: 50px;
+            background-color: black;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <h1>Volleyboll Poängtavla</h1>
+    <p>Team A: <span id="teamA">0</span></p>
+    <p>Team B: <span id="teamB">0</span></p>
+
+    <script>
+        const sheetID = "1AbCDefGHIJKLmnopQ1234567890";  // Byt ut med ditt Sheet-ID
+        const range = "Sheet1!B2:B3";  // Justera om dina poäng ligger på en annan plats
+        const apiKey = "DIN_GOOGLE_API_KEY";  // Skaffas via Google Cloud Console
+
+        async function updateScores() {
+            const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetID}/values/${range}?key=${apiKey}`;
+            const response = await fetch(url);
+            const data = await response.json();
+            document.getElementById("teamA").textContent = data.values[0][0];
+            document.getElementById("teamB").textContent = data.values[1][0];
+        }
+
+        setInterval(updateScores, 1000); // Uppdatera varje sekund
+        updateScores(); // Ladda direkt vid start
+    </script>
+</body>
+</html>
